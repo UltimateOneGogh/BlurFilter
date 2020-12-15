@@ -6,6 +6,7 @@ from utils import *
 from style_models.utils import *
 from style_models.style_model import *
 from torchvision import models
+import base64
 
 app = Flask(__name__)
 
@@ -27,7 +28,7 @@ def blurr():
     inp = image_to_tensor_(src)
     preds = model_blurr(inp, training=False)
     img = img_as_ubyte(np.array(preds[0] * 0.5 + 0.5))
-    return send_file(img.tobytes(), mimetype="image/gif")
+    return {"result": base64.b64encode(img.tobytes())}
 
 
 @app.route('/style', methods=["GET", "POST"])
@@ -38,7 +39,8 @@ def style():
     tensor = result.cpu().clone().squeeze(0)
     image = tensor_to_image(tensor)
     print(image)
-    return send_file(image.tobytes(), mimetype="image/gif")
+    # return send_file(image.tobytes(), mimetype="image/gif")
+    return {"result": base64.b64encode(image.tobytes())}
 
 
 app.run('0.0.0.0', port=5000, debug=True)
