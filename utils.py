@@ -92,7 +92,7 @@ def fit(train_dataset, epochs, test_dataset):
     checkpoint.save(file_prefix=checkpoint_prefix)
 
 
-def image_to_tensor(img):
+def image_to_tensor_(img):
     arr = tf.convert_to_tensor(np.array(img) / 127.5 - 1)
     data = tf.data.Dataset.from_tensors(arr)
     data = data.batch(1)

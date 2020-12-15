@@ -24,7 +24,7 @@ def get_image(data):
 @app.route("/blur", methods=["GET", "POST"])
 def blurr():
     src = get_image(request.files["src"])
-    inp = image_to_tensor(src)
+    inp = image_to_tensor_(src)
     preds = model_blurr(inp, training=False)
     img = img_as_ubyte(np.array(preds[0] * 0.5 + 0.5))
     return send_file(img.tobytes(), mimetype="image/gif")
@@ -35,9 +35,9 @@ def style():
     style = get_image(request.files["style"])
     src = get_image(request.files["src"])
     result = run_style_transfer(model_style, style, src)
-    print(result)
     tensor = result.cpu().clone().squeeze(0)
     image = tensor_to_image(tensor)
+    print(image)
     return send_file(image.tobytes(), mimetype="image/gif")
 
 
