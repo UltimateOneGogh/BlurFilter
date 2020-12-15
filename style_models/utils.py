@@ -38,7 +38,8 @@ def open_image(path):
 
 
 def get_image_from_source(img):
-    tensor = image_to_tensor(img).unsqueeze(0)
+    image = Image.fromarray(img)
+    tensor = image_to_tensor(image).unsqueeze(0)
     return tensor.to(device)
 
 
