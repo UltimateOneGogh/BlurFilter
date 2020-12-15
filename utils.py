@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
+import cv2
 from models import *
 
 generator = Generator()
@@ -89,3 +90,10 @@ def fit(train_dataset, epochs, test_dataset):
 
     print(f'Total time taken for learning {epochs} epochs: {(time.time() - start) / 60} minutes.')
     checkpoint.save(file_prefix=checkpoint_prefix)
+
+
+def image_to_tensor(img):
+    arr = tf.convert_to_tensor(np.array(img) / 127.5 - 1)
+    data = tf.data.Dataset.from_tensors(arr)
+    data = data.batch(1)
+    return list(data.take(1))[0]
