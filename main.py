@@ -3,12 +3,16 @@ from skimage.util import img_as_ubyte
 import cv2
 import numpy as np
 from utils import *
+from style_models.utils import *
+from style_models.style_model import *
+from torchvision import models
 
 app = Flask(__name__)
 
 checkpoint.restore(tf.train.latest_checkpoint("/home/ruslan/ml_project_pm/BlurFilter/checkpoints/term_project/"
                                               "training_checkpoints/"))
 model_blurr = checkpoint.generator
+model_style = models.vgg19(pretrained=True).features.to(device).eval()
 
 
 def get_image(data):
@@ -22,16 +26,17 @@ def blurr():
     src = get_image(request.files["src"])
     inp = image_to_tensor(src)
     preds = model_blurr(inp, training=False)
-    return img_as_ubyte(np.array(preds[0] * 0.5 + 0.5))
+    img = img_as_ubyte(np.array(preds[0] * 0.5 + 0.5))
+    return send_file(img.tobytes(), mimetype="image/gif")
 
 
 @app.route('/style', methods=["GET", "POST"])
 def style():
     style = get_image(request.files["style"])
     src = get_image(request.files["src"])
-
-
-    return ""
+    result = run_style_transfer(model_style, style, src)
+    print(result)
+    return send_file(result.tobytes(), mimetype="image/gif")
 
 
 app.run('0.0.0.0', port=5000, debug=True)
