@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from PIL import Image
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-imsize = 512 if torch.cuda.is_available() else 128
+imsize = 256 if torch.cuda.is_available() else 128
 
 # scale imported image and transform it into a torch tensor
 image_to_tensor = transforms.Compose([transforms.Resize((imsize, imsize)), transforms.ToTensor()])

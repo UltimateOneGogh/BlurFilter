@@ -36,7 +36,9 @@ def style():
     src = get_image(request.files["src"])
     result = run_style_transfer(model_style, style, src)
     print(result)
-    return send_file(result.tobytes(), mimetype="image/gif")
+    tensor = result.cpu().clone().squeeze(0)
+    image = tensor_to_image(tensor)
+    return send_file(image.tobytes(), mimetype="image/gif")
 
 
 app.run('0.0.0.0', port=5000, debug=True)
