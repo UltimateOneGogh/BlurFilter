@@ -28,7 +28,7 @@ def blurr():
     inp = image_to_tensor_(src)
     preds = model_blurr(inp, training=False)
     img = img_as_ubyte(np.array(preds[0] * 0.5 + 0.5))
-    return {"result": base64.b64encode(img.tobytes())}
+    return {"result": base64.b64encode(img.tobytes()).decode("utf-8")}
 
 
 @app.route('/style', methods=["GET", "POST"])
@@ -40,7 +40,7 @@ def style():
     image = tensor_to_image(tensor)
     print(image)
     # return send_file(image.tobytes(), mimetype="image/gif")
-    return {"result": base64.b64encode(image.tobytes())}
+    return {"result": base64.b64encode(image.tobytes()).decode("utf-8")}
 
 
 app.run('0.0.0.0', port=5000, debug=True)
