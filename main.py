@@ -7,8 +7,10 @@ from style_models.utils import *
 from style_models.style_model import *
 from torchvision import models
 import base64
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 checkpoint.restore(tf.train.latest_checkpoint("/home/ruslan/ml_project_pm/BlurFilter/checkpoints/term_project/"
                                               "training_checkpoints/"))
