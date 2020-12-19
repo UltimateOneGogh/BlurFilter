@@ -27,10 +27,11 @@ def get_image(data):
 @app.route("/blur", methods=["GET", "POST"])
 def blurr():
     src = get_image(request.files["src"])
-    inp = image_to_tensor_(src)
-    preds = model_blurr(inp, training=False)
-    img = img_as_ubyte(np.array(preds[0] * 0.5 + 0.5))
-    return {"result": base64.b64encode(img.tobytes()).decode("utf-8")}
+    # inp = image_to_tensor_(src)
+    # preds = model_blurr(inp, training=False)
+    # img = img_as_ubyte(np.array(preds[0] * 0.5 + 0.5))
+    # return {"result": base64.b64encode(img.tobytes()).decode("utf-8")}
+    return {'result': base64.b64encode(src.tobytes()).decode()}
 
 
 @app.route('/style', methods=["GET", "POST"])

@@ -1,2 +1,6 @@
 flask
 flask-cors
+tensorflow
+torch
+torchvision
+seaborn
